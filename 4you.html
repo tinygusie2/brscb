@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oldtimer4You - Verhuur</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Google+Sans:400,500,600,700|Google+Sans+Text:400,400italic,500,500italic,600,600italic,700,700italic&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="icon" type="image/png" href="/Oldtimer4YouLogo.png">
+
+    <style>
+        :root {
+            /* Kleurenpalet (gebaseerd op jouw input) */
+            --primary: rgb(76, 102, 43);
+            --primary-light: rgb(205, 237, 163);
+            --on-primary: rgb(255, 255, 255);
+            --surface: rgb(249, 250, 239);
+            --text-main: rgb(26, 28, 22);
+            --text-muted: rgb(68, 72, 61);
+            --accent-pop: #e8f5e9; 
+        }
+
+        /* --- Base Styles --- */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Google Sans Text', Arial, sans-serif; /* Modern voor leesbaarheid */
+            background-color: var(--surface);
+            color: var(--text-main);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif; /* Klassiek voor sfeer */
+            font-weight: 700;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        a { text-decoration: none; color: inherit; transition: all 0.2s ease; }
+
+        .section {
+            padding: 100px 20px;
+        }
+
+        .section-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+
+        .section-subtitle {
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 60px;
+        }
+
+
+        /* --- Navigation --- */
+        .nav-wrapper {
+            position: fixed;
+            top: 20px;
+            left: 0; right: 0;
+            display: flex;
+            justify-content: center;
+            z-index: 100;
+            padding: 0 20px;
+        }
+
+        .nav-container {
+            background-color: rgba(76, 102, 43, 0.85); /* Semi-transparant Primary */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 50px;
+            padding: 12px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 900px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .nav-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--on-primary);
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: none; /* Mobile first */
+            gap: 32px;
+        }
+
+        .nav-links a {
+            color: rgba(255,255,255,0.8);
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .collectie a {
+            color: var(--text-main);
+            font-weight: 500;
+            font-size: 0.95rem;
+            padding: inherit;
+        }
+
+        a {
+            color: var(--text-main);
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+
+        .nav-links a:hover { color: #fff; }
+
+        /* Knoppen styling */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            font-family: inherit;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn:active { transform: scale(0.98); }
+
+        .btn-primary {
+            background-color: #fff; /* Wit valt lekker op op donkere hero */
+            color: var(--primary);
+        }
+        
+        .btn-primary:hover {
+            box-shadow: 0 4px 12px rgba(255,255,255,0.3);
+        }
+
+        .btn-outline {
+            border: 2px solid rgba(255,255,255,0.3);
+            color: white;
+            background: transparent;
+        }
+
+        .btn-outline:hover {
+            border-color: white;
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        .btn-sm { padding: 8px 20px; font-size: 0.9rem; }
+        .btn-in-nav { background-color: #fff; color: var(--primary); }
+
+        /* --- Hero Section --- */
+        .hero {
+            position: relative;
+            height: 100vh; /* Volledige schermhoogte */
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 20px;
+            background-image: url('https://images.unsplash.com/photo-1544896478-d5b709d413c5?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); 
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Overlay zodat tekst leesbaar is op de foto */
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6));
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4.5rem); /* Responsive tekstgrootte */
+            margin-bottom: 16px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 32px;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+
+        .over-ons {
+            background-color: white;
+        }
+
+        .over-ons-grid {
+            display: grid;
+            gap: 60px;
+        }
+
+        @media (min-width: 768px) {
+            .over-ons-grid {
+                grid-template-columns: 1fr 1fr;
+                align-items: center;
+            }
+        }
+
+
+        .over-ons-content {
+            animation: fadeIn 1s ease-out;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .collectie {
+            animation: fadeIn 1s ease-out;
+            text-align: center;
+        }
+
+        .auto-card {
+            border-radius: 16px;
+            overflow: hidden;
+            background: #fff;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .auto-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.12);
+        }
+
+        .auto-card img {
+            height: 220px;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .auto-card-content {
+            padding: 20px;
+        }
+
+        .auto-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+
+        .price {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .cta {
+            text-align: center;
+            background: var(--primary);
+            color: white;
+        }
+
+
+
+
+        /* --- Responsive --- */
+        @media (min-width: 768px) {
+            .nav-links { display: flex; }
+            .mobile-menu-btn { display: none; }
+        }
+
+        @media (max-width: 767px) {
+            /* Mobile Navigation */
+            .nav-wrapper {
+                top: 10px;
+                padding: 0 10px;
+            }
+            
+            .nav-container {
+                padding: 10px 20px;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+
+            .nav-logo {
+                width: 100%;
+                text-align: center;
+                margin-bottom: 5px;
+            }
+
+            .nav-links {
+                display: flex;
+                width: 100%;
+                overflow-x: auto;
+                white-space: nowrap;
+                gap: 20px;
+                padding-bottom: 5px;
+                justify-content: flex-start; /* Allow scroll if needed */
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            /* Hide scrollbar for nav */
+            .nav-links::-webkit-scrollbar {
+                display: none;
+            }
+
+            .nav-actions {
+                display: none; /* Hide login button on mobile or move it */
+            }
+
+            /* Hero Adjustments */
+            .hero {
+                min-height: 500px;
+                padding-top: 140px; /* Space for nav */
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .hero-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .hero-actions .btn {
+                width: 100%;
+            }
+
+            /* Section Adjustments */
+            .section {
+                padding: 60px 20px;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .over-ons-grid {
+                gap: 40px;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section + .section {
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+
+
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 0px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="nav-wrapper">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">Oldtimer4You</a>
+            
+            <div class="nav-links">
+                <a href="/autos.html">Collectie</a>
+                <a href="/arrangementen.html">Arrangementen</a>
+                <a href="/prijzen.html">Prijzen</a>
+                <a href="#about">Over Ons</a>
+                <a href="/contact.html">Contact</a>
+            </div>
+
+            <div class="nav-actions">
+                <a href="/login.html" class="btn btn-in-nav btn-sm">Inloggen</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Rijden met een verhaal.</h1>
+                <p>De meest exclusieve oldtimers voor bruiloften, evenementen of gewoon een onvergetelijke rit.</p>
+                
+                <div class="hero-actions">
+                    <a href="/autos.html" class="btn btn-primary">Bekijk onze auto's</a>
+                    <a href="/boek-wizard.html" class="btn btn-outline">Direct boeken</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="collectie" id="collectie" style="padding: 60px 20px; max-width: 900px; margin: 0 auto;">
+            <div class="collectie-content">
+                <h1 class="section-title">Onze Collectie</h1>
+                <br>
+                <div class="collectie-preview-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 10px;">
+                    <!-- Hardcoded auto's -->
+                    <div class="auto-card">
+                        <img src="https://www.oldtimer4you.nl/wp-content/uploads/2020/04/IMG_1187-1024x768.jpg" alt="MGB 1969 groen" loading="lazy">
+                        <div class="auto-card-content">
+                            <h3>MGB 1969 groen</h3>
+                            <p class="price">€250 per dag</p>
+                        </div>
+                    </div>
+                    <div class="auto-card">
+                        <img src="https://www.oldtimer4you.nl/wp-content/uploads/2020/04/DSC05019-1024x768.jpg" alt="MGB GT 1971 blauw" loading="lazy">
+                        <div class="auto-card-content">
+                            <h3>MGB GT 1971 blauw</h3>
+                            <p class="price">€300 per dag</p>
+                        </div>
+                    </div>
+                    <div class="auto-card">
+                        <img src="https://www.oldtimer4you.nl/wp-content/uploads/2020/04/IMG_1222-1024x768.jpg" alt="MGB 1973 blauw" loading="lazy">
+                        <div class="auto-card-content">
+                            <h3>MGB 1973 blauw</h3>
+                            <p class="price">€150 per dag</p>
+                        </div>
+                    </div>
+                    <div class="auto-card">
+                        <img src="https://www.oldtimer4you.nl/wp-content/uploads/2020/05/PA180127-1024x768.jpg" alt="MGB 1977 WIT" loading="lazy">
+                        <div class="auto-card-content">
+                            <h3>MGB 1977 WIT</h3>
+                            <p class="price">€200 per dag</p>
+                        </div>
+                    </div>
+                </div>
+                <a href="/autos.html" style="display: inline-block; margin-top: 40px; font-weight: 600; color: var(--primary); border-bottom: 2px solid var(--primary); padding-bottom: 4px;">Bekijk alle auto's</a>
+            </div>
+        </section>
+
+
+        <section class="section over-ons" id="about">
+            <div class="section-inner over-ons-grid">
+                <div>
+                    <h2 class="section-title">Over Ons</h2>
+                    <p>
+                        Ik ben een liefhebber van oldtimers die ze op de weg willen houden en andere willen laten genieten van een super mooie ervaring om met een oldtimer te rijden.
+                    </p>
+                </div>
+
+                <div>
+                    <h3>Hans van Beekum</h3>
+                    <p>
+                        Op 17 jarige leeftijd al geconfronteerd met het virus “het opknappen van een reeds versleten auto’s”. Op mijn 51ste samen met mijn zoon zoekende naar een oldtimer om te gaan restaureren, mijn zoon heeft gekozen voor een MGB en ik voor een MGA. Deze hobby is uit de hand gelopen en bezit inmiddels een aantal oldtimers. Ben de oldtimers gaan verhuren omdat stilstaan kwaliteitsachteruitgang teweeg brengt en heb ontdekt wat een plezier anderen beleven aan het rijden in een oldtimer.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section cta">
+            <div class="section-inner">
+                <h2 class="section-title">Klaar voor een onvergetelijke rit?</h2>
+                <div class="hero-actions">
+                    <a href="/boek-wizard.html" class="btn btn-primary">
+                        Bekijk beschikbaarheid
+                    </a>
+                </div>
+            </div>
+        </section>
+
+
+        
+    </main>
+
+    <footer style="background-color: var(--text-main); color: var(--surface); padding: 60px 20px; text-align: center;">
+        <div class="section-inner">
+            <h2 style="font-family: 'Playfair Display', serif; margin-bottom: 20px;">Oldtimer4You</h2>
+            <div style="margin-bottom: 20px;">
+                <a href="/contact.html" style="color: var(--surface); margin: 0 10px; opacity: 0.8; ">Contact</a>
+                <a href="/voorwaarden.html" style="color: var(--surface); margin: 0 10px; opacity: 0.8; ">Algemene Voorwaarden</a>
+                <a href="/login.html?role=admin" style="color: var(--surface); margin: 0 10px; opacity: 0.3;  font-size: 0.8rem;">Admin</a>
+            </div>
+            <p style="opacity: 0.6; font-size: 0.9rem;">&copy; <span id="year"></span> Oldtimer4You. Alle rechten voorbehouden.</p>
+        </div>
+    </footer>
+
+
+        <script>
+            // Set current year
+            document.getElementById('year').textContent = new Date().getFullYear();
+            // JS voor auto rendering verwijderd omdat dit nu statisch HTML is.
+        </script>
+</body>
+</html>
