@@ -23,6 +23,15 @@
             --accent-pop: #e3f2fd; 
         }
 
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        a, button {
+            -webkit-tap-highlight-color: transparent; /* Verwijdert de blauwe klik-indicator op mobiel */
+            outline: none;
+        }
+
         /* --- Base Styles --- */
         body {
             margin: 0;
@@ -224,10 +233,119 @@
             gap: 60px;
         }
 
-        @media (min-width: 768px) {
-            .over-ons-grid {
-                grid-template-columns: 1fr 1fr;
+        .mobile-menu-btn {
+            background: none;
+            border: none;
+            color: var(--on-primary);
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            padding: 5px;
+        }
+
+        @media (max-width: 767px) {
+            .nav-wrapper {
+                top: 10px;
+                padding: 0 10px;
+            }
+            
+            .nav-container {
+                padding: 12px 20px; /* Strakke, gelijke padding boven en onder */
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                align-items: center; /* Dit forceert de verticale centrering */
+            }
+
+            .nav-logo {
+                width: auto;
+                margin: 0;
+                line-height: 1; /* Haalt de onzichtbare extra ruimte onder het lettertype weg */
+                display: flex;
                 align-items: center;
+            }
+
+            /* Toon de hamburger knop op mobiel */
+            .mobile-menu-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 0; /* Verwijder padding om verschuiving te voorkomen */
+                margin: 0;
+                height: 32px; /* Vaste hoogte en breedte voor stabiliteit */
+                width: 32px;
+            }
+
+            .mobile-menu-btn span {
+                display: block; /* Voorkomt de standaard "baseline" witruimte onder iconen */
+                line-height: 1;
+            }
+
+            .nav-links, .nav-actions {
+                display: flex;
+                width: 100%;
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+                white-space: normal;
+                
+                /* Animatie startwaarden in plaats van display: none */
+                max-height: 0;
+                opacity: 0;
+                overflow: hidden;
+                padding: 0;
+                transition: max-height 0.4s ease-in-out, opacity 0.3s ease-in-out, padding 0.4s ease-in-out;
+            }
+
+            .nav-actions {
+                padding-bottom: 10px;
+            }
+
+            .nav-container.menu-open .nav-links {
+                max-height: 350px; 
+                opacity: 1;
+                padding-top: 20px;
+            }
+
+            .nav-container.menu-open .nav-actions {
+                max-height: 100px; /* Ruimte voor de knop */
+                opacity: 1;
+                padding-top: 15px;
+                padding-bottom: 10px;
+            }
+
+            .hero {
+                min-height: 500px;
+                padding-top: 140px; 
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .hero-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .hero-actions .btn {
+                width: 100%;
+            }
+
+            .section {
+                padding: 60px 20px;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .over-ons-grid {
+                gap: 40px;
             }
         }
 
@@ -275,84 +393,7 @@
             color: white;
         }
 
-        /* --- Responsive --- */
-        @media (min-width: 768px) {
-            .nav-links { display: flex; }
-            .mobile-menu-btn { display: none; }
-        }
-
-        @media (max-width: 767px) {
-            .nav-wrapper {
-                top: 10px;
-                padding: 0 10px;
-            }
-            
-            .nav-container {
-                padding: 10px 20px;
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 15px;
-            }
-
-            .nav-logo {
-                width: 100%;
-                text-align: center;
-                margin-bottom: 5px;
-            }
-
-            .nav-links {
-                display: flex;
-                width: 100%;
-                overflow-x: auto;
-                white-space: nowrap;
-                gap: 20px;
-                padding-bottom: 5px;
-                justify-content: flex-start;
-                -webkit-overflow-scrolling: touch;
-            }
-            
-            .nav-links::-webkit-scrollbar {
-                display: none;
-            }
-
-            .nav-actions {
-                display: none;
-            }
-
-            .hero {
-                min-height: 500px;
-                padding-top: 140px; 
-            }
-
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
-            .hero p {
-                font-size: 1rem;
-            }
-
-            .hero-actions {
-                flex-direction: column;
-                width: 100%;
-            }
-
-            .hero-actions .btn {
-                width: 100%;
-            }
-
-            .section {
-                padding: 60px 20px;
-            }
-
-            .section-title {
-                font-size: 2rem;
-            }
-            
-            .over-ons-grid {
-                gap: 40px;
-            }
-        }
+        
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
@@ -380,6 +421,9 @@
     <nav class="nav-wrapper">
         <div class="nav-container">
             <a href="/" class="nav-logo">BSCB</a>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Menu openen">
+                <span class="material-symbols-rounded" id="menu-icon">menu</span>
+            </button>
             
             <div class="nav-links">
                 <a href="/werkplaats/">Werkplaats</a>
@@ -390,7 +434,7 @@
             </div>
 
             <div class="nav-actions">
-                <a href="https://tinygusie2.github.io/brscb/4you.html" target="_blank" class="btn btn-in-nav btn-sm">Oldtimer Huren</a>
+                <a href="https://www.oldtimer4you.nl" target="_blank" class="btn btn-in-nav btn-sm">Oldtimer Huren</a>
             </div>
         </div>
     </nav>
@@ -470,6 +514,24 @@
         </div>
     </footer>
 
+
+    <script>
+            document.getElementById('year').textContent = new Date().getFullYear();
+            function toggleMobileMenu() {
+                const navContainer = document.querySelector('.nav-container');
+                const menuIcon = document.getElementById('menu-icon');
+                
+                // Wissel de 'menu-open' class
+                navContainer.classList.toggle('menu-open');
+                
+                // Verander het icoon op basis van de status
+                if (navContainer.classList.contains('menu-open')) {
+                    menuIcon.textContent = 'close';
+                } else {
+                    menuIcon.textContent = 'menu';
+                }
+            }
+        </script>
     <script>
         // Set current year
         document.getElementById('year').textContent = new Date().getFullYear();
