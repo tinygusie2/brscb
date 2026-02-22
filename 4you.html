@@ -23,6 +23,15 @@
             --accent-pop: #e8f5e9; 
         }
 
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        a, button {
+            -webkit-tap-highlight-color: transparent; /* Verwijdert de blauwe klik-indicator op mobiel */
+            outline: none;
+        }
+
         /* --- Base Styles --- */
         body {
             margin: 0;
@@ -226,6 +235,7 @@
             display: grid;
             gap: 60px;
         }
+        
 
         @media (min-width: 768px) {
             .over-ons-grid {
@@ -295,50 +305,92 @@
             .mobile-menu-btn { display: none; }
         }
 
+        /* Voeg deze knop-styling ergens buiten je media queries toe (bijv. boven de @media secties) */
+        .mobile-menu-btn {
+            background: none;
+            border: none;
+            color: var(--on-primary);
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            padding: 5px;
+        }
+
+        /* Vervang je HUIDIGE @media (max-width: 767px) volledig door dit blok: */
         @media (max-width: 767px) {
-            /* Mobile Navigation */
             .nav-wrapper {
                 top: 10px;
                 padding: 0 10px;
             }
             
             .nav-container {
-                padding: 10px 20px;
+                padding: 12px 20px; /* Strakke, gelijke padding boven en onder */
+                display: flex;
                 flex-wrap: wrap;
-                justify-content: center;
-                gap: 15px;
+                justify-content: space-between;
+                align-items: center; /* Dit forceert de verticale centrering */
             }
 
             .nav-logo {
-                width: 100%;
-                text-align: center;
-                margin-bottom: 5px;
+                width: auto;
+                margin: 0;
+                line-height: 1; /* Haalt de onzichtbare extra ruimte onder het lettertype weg */
+                display: flex;
+                align-items: center;
             }
 
-            .nav-links {
+            /* Toon de hamburger knop op mobiel */
+            .mobile-menu-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 0; /* Verwijder padding om verschuiving te voorkomen */
+                margin: 0;
+                height: 32px; /* Vaste hoogte en breedte voor stabiliteit */
+                width: 32px;
+            }
+
+            .mobile-menu-btn span {
+                display: block; /* Voorkomt de standaard "baseline" witruimte onder iconen */
+                line-height: 1;
+            }
+
+            .nav-links, .nav-actions {
                 display: flex;
                 width: 100%;
-                overflow-x: auto;
-                white-space: nowrap;
-                gap: 20px;
-                padding-bottom: 5px;
-                justify-content: flex-start; /* Allow scroll if needed */
-                -webkit-overflow-scrolling: touch;
-            }
-            
-            /* Hide scrollbar for nav */
-            .nav-links::-webkit-scrollbar {
-                display: none;
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+                white-space: normal;
+                
+                /* Animatie startwaarden in plaats van display: none */
+                max-height: 0;
+                opacity: 0;
+                overflow: hidden;
+                padding: 0;
+                transition: max-height 0.4s ease-in-out, opacity 0.3s ease-in-out, padding 0.4s ease-in-out;
             }
 
             .nav-actions {
-                display: none; /* Hide login button on mobile or move it */
+                padding-bottom: 10px;
             }
 
-            /* Hero Adjustments */
+            .nav-container.menu-open .nav-links {
+                max-height: 350px; 
+                opacity: 1;
+                padding-top: 20px;
+            }
+
+            .nav-container.menu-open .nav-actions {
+                max-height: 100px; /* Ruimte voor de knop */
+                opacity: 1;
+                padding-top: 15px;
+                padding-bottom: 10px;
+            }
+
             .hero {
                 min-height: 500px;
-                padding-top: 140px; /* Space for nav */
+                padding-top: 140px; 
             }
 
             .hero h1 {
@@ -358,7 +410,6 @@
                 width: 100%;
             }
 
-            /* Section Adjustments */
             .section {
                 padding: 60px 20px;
             }
@@ -381,6 +432,8 @@
             border-top: 1px solid rgba(0,0,0,0.05);
         }
 
+        
+
 
 
         /* Custom Scrollbar */
@@ -399,7 +452,10 @@
 
     <nav class="nav-wrapper">
         <div class="nav-container">
-            <a href="/" class="nav-logo">Oldtimer4You</a>
+            <a href="/" class="nav-logo">Oldtimer4You</a> 
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Menu openen">
+                <span class="material-symbols-rounded" id="menu-icon">menu</span>
+            </button>
             
             <div class="nav-links">
                 <a href="/autos.html">Collectie</a>
@@ -515,9 +571,21 @@
 
 
         <script>
-            // Set current year
             document.getElementById('year').textContent = new Date().getFullYear();
-            // JS voor auto rendering verwijderd omdat dit nu statisch HTML is.
+            function toggleMobileMenu() {
+                const navContainer = document.querySelector('.nav-container');
+                const menuIcon = document.getElementById('menu-icon');
+                
+                // Wissel de 'menu-open' class
+                navContainer.classList.toggle('menu-open');
+                
+                // Verander het icoon op basis van de status
+                if (navContainer.classList.contains('menu-open')) {
+                    menuIcon.textContent = 'close';
+                } else {
+                    menuIcon.textContent = 'menu';
+                }
+            }
         </script>
 </body>
 </html>
